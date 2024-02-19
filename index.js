@@ -2,6 +2,7 @@ const express = require("express") ;
 const cors = require("cors") ;
 require("dotenv").config() ;
 const  connection  = require("./connection");
+const UserRouter = require("./route/userRoute");
 
 
 const app = express() ;
@@ -11,6 +12,8 @@ app.use(express.json() , cors()) ;
 app.get("/",(req,res)=>{
     res.status(200).send({"msg":"This is a home page..."});
 });
+
+app.use("/user",UserRouter) ;
 
 app.listen(3000,async(req,res)=>{
     try{
