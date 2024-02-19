@@ -1,15 +1,31 @@
-const PostModel = require("../model/postModel") ;
+const multer = require('multer');
+const path = require('path') ;
+const PostModel = require('../model/postModel');
 
-exports.addPost = async(req,res)=>{
-    try{
-        const { quote , device , commentCount} = req.body ;
-        const userId = req.body.userID ;
-        const photoPath = req.file.path ;
-        const post = new PostModel({quote,photoPath,device,commentCount,userId});
-        await post.save() ;
-        res.status(200).send({"msg":"Uploaded post...."});
-    }catch(error){
-        console.log(error);
-        res.status(500).send({"msg":error}) ;
-    }
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+exports.addPost = upload.single('photo'), async (req, res) => {
+  try {
+    const { quote, device, commentCount} = req.body;
+    const photoPath = req.file.path;
+    const post = await PostModel.create({
+      quote,
+      photo: photoPath,
+      device,
+      commentCount
+    });
+    res.status(201).json({ message: 'Post added successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
