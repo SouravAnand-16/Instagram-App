@@ -7,7 +7,6 @@ const postSchema = mongoose.Schema({
      },
      photo : {
         type : String ,
-        required : true 
      },
      device : {
         type : String ,
@@ -16,8 +15,7 @@ const postSchema = mongoose.Schema({
         type : String 
      },
      userID : {
-        type :mongoose.Schema.Types.ObjectId ,
-        ref : "user"
+        type : String
      }
 },{
     versionKey : false
