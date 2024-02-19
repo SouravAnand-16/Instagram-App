@@ -1,0 +1,55 @@
+let tableBody = document.getElementById("todoTableBody");
+let prioritySelect = document.getElementById("prioritySelect");
+let statusSelect = document.getElementById("statusSelect");
+
+function showData(){
+        let cartData = JSON.parse(localStorage.getItem("archive"))||[];
+        tableBody.innerHTML = '';
+        cartData.forEach((data,index)=>{
+            let tr = document.createElement("tr");
+            let name = document.createElement("td");
+            name.textContent=data.title ;
+            let priority = document.createElement("td");
+            priority.textContent= data.priority ;
+            let status = document.createElement("td");
+            status.textContent = data.status
+            // let statusBtn = document.createElement("button");
+            // statusBtn.classList.add("toggle");
+            // statusBtn. = textContentdata.status ;
+            // status.append(statusBtn)
+            let restore = document.createElement("td");
+            let restoreButton = document.createElement("button");
+            restoreButton.classList.add("restoreBtn");
+            restoreButton.textContent = "Restore";
+            restoreButton.addEventListener("click",()=>{
+                let archivedData = JSON.parse(localStorage.getItem("archive"))||[];
+                archivedData.splice(index,1);
+                let cartData = JSON.parse(localStorage.getItem("todos"))||[];
+                cartData.push(data)
+                localStorage.setItem("todos",JSON.stringify(cartData));
+                localStorage.setItem("archive",JSON.stringify(archivedData));
+                showData();
+            });
+            let deleteRow = document.createElement("td");
+            let deleteButton = document.createElement("button");
+            deleteButton.classList.add("deleteBtn");
+            deleteButton.textContent = "Delete";
+            deleteButton.addEventListener("click",()=>{
+                let archivedData = JSON.parse(localStorage.getItem("archive"))||[];
+                archivedData.splice(index,1);
+                localStorage.setItem("archive",JSON.stringify(archivedData));
+                showData();
+            });
+            restore.append(restoreButton);
+            deleteRow.append(deleteButton);
+            tr.append(name,priority,status,restore,deleteRow);
+            tableBody.append(tr);
+        });
+    }
+    // prioritySelect.addEventListener("click",()=>{
+    //     let cartData = JSON.parse(localStorage.getItem("archive"))||[];
+    //     if( prioritySelect.value === 'pending'){
+
+    //     }
+    // })
+showData();

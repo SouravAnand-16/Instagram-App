@@ -17,12 +17,15 @@ exports.addPost = upload.single('photo'), async (req, res) => {
   try {
     const { quote, device, commentCount} = req.body;
     const photoPath = req.file.path;
+    const userID = req.body.userID ;
     const post = await PostModel.create({
       quote,
       photo: photoPath,
       device,
-      commentCount
+      commentCount,
+      userID 
     });
+    await post.save() ;
     res.status(201).json({ message: 'Post added successfully' });
   } catch (error) {
     console.error(error);

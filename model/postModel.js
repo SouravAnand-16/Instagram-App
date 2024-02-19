@@ -3,7 +3,6 @@ const mongoose = require("mongoose") ;
 const postSchema = mongoose.Schema({
      quote : {
         type : String ,
-        required : true 
      },
      photo : {
         type : String ,
